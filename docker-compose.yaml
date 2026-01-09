@@ -1,0 +1,38 @@
+services:
+
+  plume:
+    image: phlak/plume:${PLUME_VERSION:-latest}
+    env_file: environment.d/plume.env
+    environment:
+      CACHE_DRIVER: valkey
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+    ports:
+      - ${PLUME_PORT:-8076}:80
+    volumes:
+      - ${PLUME_DATA_PATH:-./volumes/data}:/var/lib/www/data
+      - /etc/localtime:/etc/localtime:ro
+    depends_on: [cache]
+    restart: unless-stopped
+    
+  cache:
+    image: valkey/valkey:${VALKEY_VERSION:-9}
+    volumes:
+      - ${CACHE_DATA_VOLUME:-cache-data}:/data
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+ 
+  watchtower:
+    image: containrrr/watchtower:${WATCHTOWER_VERSION:-latest}
+    env_file: environment.d/watchtower.env
+    environment:
+      WATCHTOWER_SCOPE: ${COMPOSE_PROJECT_NAME}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      com.centurylinklabs.watchtower.scope: ${COMPOSE_PROJECT_NAME}
+    restart: unless-stopped
+
+volumes:
+  cache-data: {}
