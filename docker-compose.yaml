@@ -10,7 +10,7 @@ services:
     ports:
       - ${PLUME_PORT:-8076}:80
     volumes:
-      - ${PLUME_DATA_PATH:-./volumes/data}:/var/lib/www/data
+      - ${PLUME_DATA_PATH:-./volumes/data}:/var/www/html/data
       - /etc/localtime:/etc/localtime:ro
     depends_on: [cache]
     restart: unless-stopped
