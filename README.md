@@ -20,8 +20,17 @@ Installation
 
   3. Set the environment variables in `.env`
 
-  4. Set service-specific environment variables by editing the files found in the `environment.d` directory (optional)
+  4. Run `docker compose config` to validate and confirm your configuration
 
-  5. Run `docker compose config` to validate and confirm your configuration
+  5. Run `docker compose up -d` to start the containers
 
-  6. Run `docker compose up -d` to start the containers
+Configuration
+-------------
+
+Your Plume installation can be configured by adding environment variables to the
+`environment.d/plume.env` file. See the [Plume Documentation](https://docs.plume.pub)
+for the list of available environment variables and what they do.
+
+> [!IMPORTANT]
+> After modifying `environment.d/plume.env` you must restart your containers
+> (i.e. `docker compose up -d`) for the changes to apply.
