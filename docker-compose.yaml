@@ -1,6 +1,6 @@
 services:
 
-  plume-web:
+  plume:
     image: phlak/plume:${PLUME_VERSION:-latest}
     env_file: environment.d/plume.env
     environment: &plume-environment
@@ -15,7 +15,7 @@ services:
     depends_on: [cache]
     restart: unless-stopped
 
-  plume:
+  php:
     image: phlak/plume:${PLUME_VERSION:-latest}
     env_file: environment.d/plume.env
     environment:
@@ -23,18 +23,18 @@ services:
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
       - /etc/localtime:/etc/localtime:ro
-    entrypoint: php plume
     depends_on: [cache]
     profiles: [cli]
+    entrypoint: php
     restart: never
-    
+
   cache:
     image: valkey/valkey:${VALKEY_VERSION:-9}
     volumes:
       - ${CACHE_DATA_VOLUME:-cache-data}:/data
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
- 
+
   watchtower:
     image: containrrr/watchtower:${WATCHTOWER_VERSION:-latest}
     env_file: environment.d/watchtower.env
