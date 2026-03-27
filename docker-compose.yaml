@@ -8,7 +8,6 @@ services:
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
       - /etc/localtime:/etc/localtime:ro
-    depends_on: [cache]
     restart: unless-stopped
 
   php:
@@ -18,7 +17,6 @@ services:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
       - ${CACHE_DATA_VOLUME:-cache-data}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
-    depends_on: [cache]
     profiles: [cli]
     entrypoint: php
     restart: never
