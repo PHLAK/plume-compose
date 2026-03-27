@@ -3,10 +3,6 @@ services:
   plume:
     image: phlak/plume:${PLUME_VERSION:-latest}
     env_file: environment.d/plume.env
-    environment: &plume-environment
-      CACHE_DRIVER: valkey
-      REDIS_HOST: cache
-      REDIS_PORT: 6379
     ports:
       - ${PLUME_PORT:-8076}:80
     volumes:
@@ -18,22 +14,14 @@ services:
   php:
     image: phlak/plume:${PLUME_VERSION:-latest}
     env_file: environment.d/plume.env
-    environment:
-      <<: *plume-environment
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
+      - ${CACHE_DATA_VOLUME:-cache-data}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     depends_on: [cache]
     profiles: [cli]
     entrypoint: php
     restart: never
-
-  cache:
-    image: valkey/valkey:${VALKEY_VERSION:-9}
-    volumes:
-      - ${CACHE_DATA_VOLUME:-cache-data}:/data
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
 
   watchtower:
     image: containrrr/watchtower:${WATCHTOWER_VERSION:-latest}
