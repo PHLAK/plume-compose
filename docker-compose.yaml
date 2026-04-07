@@ -7,6 +7,7 @@ services:
       - ${PLUME_PORT:-8076}:80
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
+      - ${PLUME_CACHE_VOLUME:-plume-cache}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
@@ -15,7 +16,7 @@ services:
     env_file: environment.d/plume.env
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
-      - ${CACHE_DATA_VOLUME:-cache-data}:/var/www/html/cache
+      - ${PLUME_CACHE_VOLUME:-plume-cache}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     profiles: [cli]
     entrypoint: php
@@ -34,4 +35,4 @@ services:
     restart: unless-stopped
 
 volumes:
-  cache-data: {}
+  plume-cache: {}
