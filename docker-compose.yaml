@@ -8,7 +8,7 @@ services:
       - ${PLUME_PORT:-8076}:80
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
-      - ${PLUME_DATA_PATH:-./themes}:/var/www/html/themes
+      - ${PLUME_THEME_PATH:-./themes}:/var/www/html/themes
       - ${PLUME_CACHE_VOLUME:-plume-cache}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
@@ -19,7 +19,7 @@ services:
     env_file: environment.d/plume.env
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
-      - ${PLUME_DATA_PATH:-./themes}:/var/www/html/themes
+      - ${PLUME_THEME_PATH:-./themes}:/var/www/html/themes
       - ${PLUME_CACHE_VOLUME:-plume-cache}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     profiles: [cli]
