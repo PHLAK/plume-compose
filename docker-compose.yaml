@@ -1,8 +1,7 @@
 services:
 
-  plume:
+  app:
     image: phlak/plume:${PLUME_VERSION:-latest}
-    user: ${HOST_USER_ID:-0}:${HOST_GROUP_ID:-0}
     env_file: environment.d/plume.env
     ports:
       - ${PLUME_PORT:-8076}:80
@@ -13,9 +12,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
-  php:
+  plume:
     image: phlak/plume:${PLUME_VERSION:-latest}
-    user: ${HOST_USER_ID:-0}:${HOST_GROUP_ID:-0}
+    user: www-data:www-data
     env_file: environment.d/plume.env
     volumes:
       - ${PLUME_DATA_PATH:-./data}:/var/www/html/data
@@ -23,7 +22,7 @@ services:
       - ${PLUME_CACHE_VOLUME:-plume-cache}:/var/www/html/cache
       - /etc/localtime:/etc/localtime:ro
     profiles: [cli]
-    entrypoint: php
+    entrypoint: php plume
     restart: never
 
   watchtower:
